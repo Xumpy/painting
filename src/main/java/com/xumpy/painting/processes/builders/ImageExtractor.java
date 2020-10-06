@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringJoiner;
 
 public class ImageExtractor implements ProcessStarter {
 
@@ -18,9 +19,17 @@ public class ImageExtractor implements ProcessStarter {
 
     @Override
     public void start() throws IOException, InterruptedException {
-        Process process = pb.start();
-        process.waitFor();
+        Process p = pb.start();;
+        String result = "";
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-        System.out.println(IOUtils.toString(pb.start().getInputStream()));
+        StringJoiner sj = new StringJoiner(System.getProperty("line.separator"));
+        reader.lines().iterator().forEachRemaining(sj::add);
+        result = sj.toString();
+
+        p.waitFor();
+        p.destroy();
+
+        System.out.println(result);
     }
 }
