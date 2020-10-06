@@ -8,7 +8,7 @@ import java.io.IOException;
 @Component
 public class StartOnLoad {
 
-    public StartOnLoad() throws IOException {
+    public StartOnLoad() throws IOException, InterruptedException {
         ProcessStarter processStarter = new ImageExtractor("/home/pi/ChildScare.mp4", "/home/pi/output.jpeg");
 
         processStarter.start();
