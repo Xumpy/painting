@@ -1,7 +1,15 @@
 package com.xumpy.painting.processes;
 
-import java.io.IOException;
+public abstract class ProcessStarter {
+    public abstract ProcessBuilder processBuilder();
 
-public interface ProcessStarter {
-    public void start() throws IOException, InterruptedException;
+    public void start(){
+        try {
+            Process p = processBuilder().start();
+            p.waitFor();
+            p.destroy();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }
