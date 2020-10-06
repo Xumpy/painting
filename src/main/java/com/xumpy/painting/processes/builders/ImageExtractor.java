@@ -17,8 +17,10 @@ public class ImageExtractor implements ProcessStarter {
     }
 
     @Override
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         Process process = pb.start();
+        process.waitFor();
+
         System.out.println(IOUtils.toString(pb.start().getInputStream()));
     }
 }
