@@ -14,11 +14,4 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
-    @Bean
-    public void commandLineRunner() throws IOException {
-        ProcessStarter processStarter = new ImageExtractor("/home/pi/ChildScare.mp4", "/home/pi/output.jpeg");
-
-        processStarter.start();
-    }
 }
