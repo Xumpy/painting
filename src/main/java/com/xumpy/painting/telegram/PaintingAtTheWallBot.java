@@ -7,6 +7,7 @@ import com.xumpy.painting.telegram.component.FileBuilder;
 import com.xumpy.painting.telegram.component.FileType;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -23,25 +24,42 @@ public class PaintingAtTheWallBot extends TelegramLongPollingBot {
         this.fileBuilder = fileBuilder;
     }
 
+    private void SendReciveidFile(Message message, String fileName){
+        try {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(message.getChatId());
+            sendMessage.setText("Received and saved file: " + fileName);
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.getMessage().hasPhoto()){
             byte[] photo = restService.getPhoto(update.getMessage().getPhoto());
             String fileName = fileBuilder.build(photo, FileType.JPEG);
 
-            try {
-                SendMessage sendMessage = new SendMessage();
-                sendMessage.setChatId(update.getMessage().getChatId());
-                sendMessage.setText("Received and saved file: " + fileName);
-                execute(sendMessage);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            }
+            SendReciveidFile(update.getMessage(), fileName);
 
             ProcessStarter frameLoader = new FrameLoader(fileName);
             frameLoader.start();
         }
         if (update.getMessage().hasVideo()){
+            byte[] video = restService.getVideo(update.getMessage().getVideo());
+            String fileName = fileBuilder.build(video, FileType.AVI);
+
+            SendReciveidFile(update.getMessage(), fileName);
+
+            System.out.println("to be implemented");
+        }
+        if (update.getMessage().hasVideoNote()){
+            byte[] video = restService.getVideoNote(update.getMessage().getVideoNote());
+            String fileName = fileBuilder.build(video, FileType.AVI);
+
+            SendReciveidFile(update.getMessage(), fileName);
+
             System.out.println("to be implemented");
         }
         if (update.getMessage().hasText()){
