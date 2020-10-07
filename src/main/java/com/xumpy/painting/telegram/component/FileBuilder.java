@@ -29,13 +29,20 @@ public class FileBuilder {
         }
     }
 
+    public String fileName(Files file){
+        return file.getLocation_base() + "/" + file.getRowId() + "." + file.getFile_type();
+    }
+
+    public String fileName(Integer rowId){
+        return fileName(fileDB.selectFile(rowId));
+    }
+
     public String build(byte[] byteArray, FileType fileType){
         Number rowId = fileDB.insertFile("/home/pi/" + fileType.getType(), fileType.getType());
         Files file = fileDB.selectFile(rowId);
 
-        String fileName = file.getLocation_base() + "/" + file.getRowId() + "." + file.getFile_type();
-        writeFileToFileSystem(byteArray, fileName);
+        writeFileToFileSystem(byteArray, fileName(file));
 
-        return fileName;
+        return fileName(file);
     }
 }

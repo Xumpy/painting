@@ -13,3 +13,4 @@ install libs
 * omxplayer
 * git
 * openjdk-8-jdk
+* imagemagick 

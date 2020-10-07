@@ -43,8 +43,7 @@ public class PaintingAtTheWallBot extends TelegramLongPollingBot {
 
             SendReciveidFile(update.getMessage(), fileName);
 
-            ProcessStarter frameLoader = new FrameLoader(fileName);
-            frameLoader.start();
+            new FrameLoader(fileName).start();
         }
         if (update.getMessage().hasVideo()){
             byte[] video = restService.getVideo(update.getMessage().getVideo());
@@ -63,8 +62,12 @@ public class PaintingAtTheWallBot extends TelegramLongPollingBot {
             System.out.println("to be implemented");
         }
         if (update.getMessage().hasText()){
-            System.out.println(update.getMessage().getText());
-            System.out.println("to be implemented");
+            String commandTest = update.getMessage().getText();
+
+            if (commandTest.toLowerCase().startsWith("load")){
+                String[] commands = commandTest.split(" ");
+                new FrameLoader(fileBuilder.fileName(Integer.parseInt(commands[1]))).start();
+            }
         }
     }
 
