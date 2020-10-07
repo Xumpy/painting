@@ -14,3 +14,4 @@ install libs
 * git
 * openjdk-8-jdk
 * imagemagick 
+* screen

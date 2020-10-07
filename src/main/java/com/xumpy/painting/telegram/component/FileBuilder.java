@@ -2,6 +2,7 @@ package com.xumpy.painting.telegram.component;
 
 import com.xumpy.painting.database.FileDB;
 import com.xumpy.painting.database.model.Files;
+import com.xumpy.painting.processes.builders.ImageResizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,6 @@ import java.util.Base64;
 public class FileBuilder {
 
     @Autowired private FileDB fileDB;
-
-    private void printByteArrayAsBase64(byte[] byteArray){
-        byte[] encoded = Base64.getEncoder().encode(byteArray);
-        System.out.println(new String(encoded));
-    }
 
     private void writeFileToFileSystem(byte[] byteArray, String fileName){
         try{
@@ -42,6 +38,7 @@ public class FileBuilder {
         Files file = fileDB.selectFile(rowId);
 
         writeFileToFileSystem(byteArray, fileName(file));
+        new ImageResizer(fileName(file)).start();
 
         return fileName(file);
     }
