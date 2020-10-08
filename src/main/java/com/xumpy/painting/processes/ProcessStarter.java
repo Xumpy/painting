@@ -28,7 +28,7 @@ public abstract class ProcessStarter {
         for(String command: processCommands()){
             output = output + " " + command;
         }
-        if (profile == "pi"){
+        if (profile.equals("pi")){
             LOGGER.info("Executed on " + profile + ": "  + output);
         } else {
             LOGGER.info("Mocked on " + profile + ": "  + output);
@@ -36,7 +36,7 @@ public abstract class ProcessStarter {
     }
 
     public void start(){
-        if (profile == "pi"){
+        if (profile.equals("pi")){
             executeProcess();
         }
         printProcess();
