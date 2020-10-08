@@ -14,6 +14,6 @@ public class MovieStarter extends ProcessStarter {
 
     @Override
     public List<String> processCommands() {
-        return Arrays.asList("/usr/bin/omxplayer", "-o", "both", "--win", "0 801 1440 900", "--aspect-mode", "fill", "--no-osd", "--vol", "-600", fileName);
+        return Arrays.asList("/usr/bin/omxplayer", "-o", "both", "--aspect-mode", "fill", "--no-osd", "--vol", "-600", fileName);
     }
 }
