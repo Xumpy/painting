@@ -1,4 +1,4 @@
-package com.xumpy.painting.telegram.component;
+package com.xumpy.painting.telegram.component.enums;
 
 public enum FileType {
     JPEG("JPEG"),

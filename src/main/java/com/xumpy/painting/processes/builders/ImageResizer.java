@@ -2,18 +2,19 @@ package com.xumpy.painting.processes.builders;
 
 import com.xumpy.painting.processes.ProcessStarter;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ImageResizer extends ProcessStarter {
     private static final String RESIZE="1440x900^";
-
-    private ProcessBuilder pb = new ProcessBuilder();
-
+    private String imageFile;
 
     public ImageResizer(String imageFile){
-        pb.command("/usr/bin/convert", imageFile, "-resize", RESIZE, imageFile);
+        this.imageFile = imageFile;
     }
 
     @Override
-    public ProcessBuilder processBuilder() {
-        return pb;
+    public List<String> processCommands() {
+        return Arrays.asList("/usr/bin/convert", imageFile, "-resize", RESIZE, imageFile);
     }
 }

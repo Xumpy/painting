@@ -3,17 +3,21 @@ package com.xumpy.painting.telegram.component;
 import com.xumpy.painting.database.FileDB;
 import com.xumpy.painting.database.model.Files;
 import com.xumpy.painting.processes.builders.ImageResizer;
+import com.xumpy.painting.telegram.component.enums.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 
 @Component
-public class FileBuilder {
+public class FileBuilderComponent {
 
     @Autowired private FileDB fileDB;
+
+    @Value("${home.folder}")
+    private String homeFolder;
 
     private void writeFileToFileSystem(byte[] byteArray, String fileName){
         try{
@@ -34,7 +38,7 @@ public class FileBuilder {
     }
 
     public String build(byte[] byteArray, FileType fileType){
-        Number rowId = fileDB.insertFile("/home/pi/" + fileType.getType(), fileType.getType());
+        Number rowId = fileDB.insertFile(homeFolder + "/" + fileType.getType(), fileType.getType());
         Files file = fileDB.selectFile(rowId);
 
         writeFileToFileSystem(byteArray, fileName(file));

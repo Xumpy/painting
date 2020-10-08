@@ -1,7 +1,6 @@
 package com.xumpy.painting.telegram;
 
-import com.xumpy.painting.telegram.api.services.RestService;
-import com.xumpy.painting.telegram.component.FileBuilder;
+import com.xumpy.painting.telegram.component.PaintingAtTheWallComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -10,15 +9,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-public class PaintingAtTheWallComponent implements CommandLineRunner {
-    private String telegramBotUsername = System.getProperty("telegram.bot.username");
-    private String telegramBotToken = System.getProperty("telegram.bot.token");
-
+public class PaintingAtTheWallLoader implements CommandLineRunner {
     @Autowired
-    private RestService restService;
-
-    @Autowired
-    private FileBuilder fileBuilder;
+    private PaintingAtTheWallComponent paintingAtTheWallComponent;
 
     @Override
     public void run(String... args) throws Exception {
@@ -30,7 +23,7 @@ public class PaintingAtTheWallComponent implements CommandLineRunner {
 
         // Register our bot
         try {
-            botsApi.registerBot(new PaintingAtTheWallBot(telegramBotUsername, telegramBotToken, fileBuilder, restService));
+            botsApi.registerBot(new PaintingAtTheWallBot(paintingAtTheWallComponent));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
