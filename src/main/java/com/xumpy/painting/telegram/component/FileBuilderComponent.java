@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @Component
 public class FileBuilderComponent {
@@ -27,6 +30,18 @@ public class FileBuilderComponent {
         } catch (IOException ioException){
             ioException.printStackTrace();
         }
+    }
+
+    public String loadScareFirstFrame(String scareFile){
+        return homeFolder + "/" + FileType.PNG + "/" + scareFile.toLowerCase() + "." + FileType.PNG;
+    }
+
+    public String loadScareRandomMovie(String scareFile){
+        List<Integer> givenList = Arrays.asList(1, 2, 3);
+        Random rand = new Random();
+        String fileName = scareFile + givenList.get(rand.nextInt(givenList.size()));
+
+        return homeFolder + "/" + FileType.MP4 + "/" + fileName.toLowerCase() + "." + FileType.MP4;
     }
 
     public String fileName(Files file){

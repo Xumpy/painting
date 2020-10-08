@@ -36,11 +36,7 @@ public class PaintingAtTheWallComponent {
         return sendMessage;
     }
 
-    private SendMessage createButton(Message originalMessage, String responseText, String buttonText, String buttonInternalName){
-        SendMessage sendMessage = new SendMessage()
-                .setChatId(originalMessage.getChatId())
-                .setText(responseText);
-
+    private SendMessage createButton(SendMessage sendMessage, String buttonText, String buttonInternalName){
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
@@ -60,8 +56,16 @@ public class PaintingAtTheWallComponent {
         }
 
         if (message.getText().toLowerCase().startsWith("scare")) {
-            new FrameLoader(homeFolder + "/" + "ChildStart.png").start();
-            return createButton(message, "Scare mode activated", "Scare Someone", "scare_someone");
+
+            String[] commands = message.getText().split(" ");
+            String scareMode = commands[1];
+
+            SendMessage sendMessage = new SendMessage()
+                    .setChatId(message.getChatId())
+                    .setText("Scare mode activated: " + scareMode);
+            new FrameLoader(fileBuilderComponent.loadScareFirstFrame(scareMode)).start();
+
+            return createButton(sendMessage, "Scare Someone", "scare_someone");
         }
 
         return null;
@@ -100,10 +104,9 @@ public class PaintingAtTheWallComponent {
 
     public BotApiMethod callBackQuery(CallbackQuery callbackQuery){
         if (callbackQuery.getData().equals("scare_someone")){
-            List<Integer> givenList = Arrays.asList(1, 2, 3);
-            Random rand = new Random();
-            String fileName = "ChildScare" + givenList.get(rand.nextInt(givenList.size())) + ".mp4";
-            new MovieStarter(homeFolder + "/" + fileName).start();
+            String scareMode = callbackQuery.getMessage().getText().replace("Scare mode activated: ", "");
+
+            new MovieStarter(fileBuilderComponent.loadScareRandomMovie(scareMode)).start();
         }
         return null;
     }

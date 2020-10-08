@@ -2,7 +2,9 @@ package com.xumpy.painting.telegram.component.enums;
 
 public enum FileType {
     JPEG("JPEG"),
-    AVI("AVI");
+    AVI("AVI"),
+    MP4("MP4"),
+    PNG("PNG");
 
     private String fileType;
     public String getType(){
